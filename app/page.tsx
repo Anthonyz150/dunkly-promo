@@ -67,11 +67,12 @@ export default function PromotionPage() {
             </div>
           </div>
         ) : (
-          // --- LIEN DE TÉLÉCHARGEMENT .EXE (Orange si pas connecté) ---
+          // --- LIEN DE TÉLÉCHARGEMENT .EXE (Orange, caché sur mobile) ---
           <a 
             href={EXE_DOWNLOAD_URL}
             download="DunklySetup.exe"
-            className="bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg flex items-center gap-2"
+            {/* hidden = caché par défaut, md:flex = affiché en flex à partir de la taille tablette/PC */}
+            className="hidden md:flex bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg items-center gap-2"
           >
             <span>📥</span> Télécharger pour Windows
           </a>
