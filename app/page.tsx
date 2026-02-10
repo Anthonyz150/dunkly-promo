@@ -2,14 +2,15 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { supabase } from "@/lib/supabase"; // Assurez-vous que ce chemin est correct
+import { supabase } from "@/lib/supabase"; // Assurez-vous que ce fichier existe
 
 export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
   
-  // Définissez vos URLs réelles ici
-  const APP_URL = "https://app.dunkly.com";
-  const PROMO_URL = "https://promo.dunkly.com"; // URL de ce site de promo
+  // URL de ce site de promo
+  const PROMO_URL = "https://dunkly.vercel.app"; 
+  // URL de l'app de gestion
+  const APP_URL = "https://dunkly-app.vercel.app";
   
   // URL de redirection encodée pour le lien de connexion
   const loginUrl = `${APP_URL}/login?redirect=${encodeURIComponent(PROMO_URL)}`;
@@ -24,7 +25,6 @@ export default function PromotionPage() {
   }, []);
 
   return (
-    // Fond sombre style Dunkly
     <div className="min-h-screen bg-slate-950 text-slate-100">
       
       {/* NAVBAR */}
