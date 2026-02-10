@@ -71,7 +71,6 @@ export default function PromotionPage() {
           <a 
             href={EXE_DOWNLOAD_URL}
             download="DunklySetup.exe"
-            {/* hidden = caché par défaut, md:flex = affiché en flex à partir de la taille tablette/PC */}
             className="hidden md:flex bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg items-center gap-2"
           >
             <span>📥</span> Télécharger pour Windows
