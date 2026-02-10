@@ -13,7 +13,7 @@ export default function PromotionPage() {
   // URL de l'app de gestion
   const APP_URL = "https://dunkly-app.vercel.app";
   // URL de téléchargement du fichier .exe
-  const EXE_DOWNLOAD_URL = "/downloads/dunkly-setup.exe"; // Assurez-vous que le fichier est dans le dossier public/downloads
+  const EXE_DOWNLOAD_URL = "/downloads/dunkly-setup.exe"; // Fichier à mettre dans public/downloads/
 
   useEffect(() => {
     // Vérifier la session actuelle au chargement
@@ -35,6 +35,12 @@ export default function PromotionPage() {
     };
   }, []);
 
+  // --- FONCTION POUR OBTENIR L'INITIALE ---
+  const getUserInitial = () => {
+    if (!user) return "";
+    return user.email ? user.email[0].toUpperCase() : "U";
+  };
+
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
       
@@ -44,14 +50,33 @@ export default function PromotionPage() {
           <span className='text-3xl'>🏀</span> DUNKLY
         </span>
 
-        {/* --- LIEN DE TÉLÉCHARGEMENT .EXE --- */}
-        <a 
-          href={EXE_DOWNLOAD_URL}
-          download="DunklySetup.exe"
-          className="bg-slate-800 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-700 transition shadow-lg flex items-center gap-2"
-        >
-          <span>📥</span> Télécharger pour Windows
-        </a>
+        {/* --- LOGIQUE D'AFFICHAGE DANS LA NAVBAR --- */}
+        {loading ? (
+          <div className="w-10 h-10 bg-slate-800 animate-pulse rounded-full"></div>
+        ) : user ? (
+          // Affiche l'initiale du profil si connecté
+          <div className="flex items-center gap-4">
+            <Link 
+              href={APP_URL} 
+              className="text-sm text-slate-400 hover:text-white"
+            >
+              Mon Dashboard
+            </Link>
+            <div className="w-10 h-10 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
+              {getUserInitial()}
+            </div>
+          </div>
+        ) : (
+          // --- LIEN DE TÉLÉCHARGEMENT .EXE (Orange si pas connecté) ---
+          <a 
+            href={EXE_DOWNLOAD_URL}
+            download="DunklySetup.exe"
+            className="bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg flex items-center gap-2"
+          >
+            <span>📥</span> Télécharger pour Windows
+          </a>
+        )}
+
       </nav>
 
       {/* HERO SECTION */}
@@ -63,6 +88,7 @@ export default function PromotionPage() {
           Gérez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
         </p>
         <div className="mt-12">
+          {/* --- BOUTON ORANGE --- */}
           <Link 
             href={`${APP_URL}/register?redirect=${encodeURIComponent(PROMO_URL)}`}
             className="bg-orange-600 text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-orange-500 transition shadow-xl shadow-orange-950/30"
