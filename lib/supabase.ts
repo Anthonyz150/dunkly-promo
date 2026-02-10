@@ -5,7 +5,8 @@ const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storageKey: 'dunkly-auth-token', // Nom de la clé dans le localStorage
+    // Il faut que ce nom soit le même dans les deux projets
+    storageKey: 'dunkly-auth-token', 
     storage: typeof window !== 'undefined' ? window.localStorage : undefined,
   },
 });
