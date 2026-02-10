@@ -78,7 +78,7 @@ export default function PromotionPage() {
         )}
       </nav>
 
-      {/* ... reste du code (Hero, Features, Footer) ... */}
+      {/* HERO SECTION */}
       <header className="py-24 text-center px-6 bg-slate-900 rounded-b-[40px]">
         <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight">
           La plateforme des <br /> résultats de <span className="text-orange-500">Basket-ball</span>.
@@ -96,6 +96,7 @@ export default function PromotionPage() {
         </div>
       </header>
 
+      {/* FEATURES SECTION */}
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
           {[
@@ -112,6 +113,7 @@ export default function PromotionPage() {
         </div>
       </section>
 
+      {/* FOOTER SIMPLE */}
       <footer className="border-t border-slate-800 py-12 mt-12 bg-slate-900">
         <div className="max-w-6xl mx-auto px-6 text-center text-slate-500">
           <p className="font-bold text-white mb-2">🏀 DUNKLY</p>
