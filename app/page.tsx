@@ -91,7 +91,7 @@ export default function PromotionPage() {
             href={`${APP_URL}/register?redirect=${encodeURIComponent(PROMO_URL)}`}
             className="bg-orange-600 text-white px-10 py-5 rounded-full text-lg font-bold hover:bg-orange-500 transition shadow-xl shadow-orange-950/30"
           >
-            Créer un club gratuitement
+            Créer un compte dès maintenant
           </Link>
         </div>
       </header>
