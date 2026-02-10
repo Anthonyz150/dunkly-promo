@@ -51,6 +51,32 @@ export default function PromotionPage() {
           <span className='text-3xl'>🏀</span> DUNKLY
         </span>
 
+        {/* --- LOGIQUE D'AFFICHAGE DANS LA NAVBAR --- */}
+        {loading ? (
+          <div className="w-10 h-10 bg-slate-800 animate-pulse rounded-full"></div>
+        ) : user ? (
+          // Affiche l'initiale du profil à la place du bouton si connecté
+          <div className="flex items-center gap-4">
+            <Link 
+              href={APP_URL} 
+              className="text-sm text-slate-400 hover:text-white"
+            >
+              Mon Dashboard
+            </Link>
+            <div className="w-10 h-10 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
+              {getUserInitial()}
+            </div>
+          </div>
+        ) : (
+          // Bouton Se connecter si non connecté
+          <Link 
+            href={loginUrl} 
+            className="bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg"
+          >
+            Se connecter
+          </Link>
+        )}
+
       </nav>
 
       {/* HERO SECTION */}
