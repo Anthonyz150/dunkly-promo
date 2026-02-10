@@ -12,8 +12,8 @@ export default function PromotionPage() {
   const PROMO_URL = "https://dunkly.vercel.app"; 
   // URL de l'app de gestion
   const APP_URL = "https://dunkly-app.vercel.app";
-  // URL de téléchargement du fichier .exe
-  const EXE_DOWNLOAD_URL = "/downloads/dunkly-setup.exe"; // Fichier à mettre dans public/downloads/
+  // URL de téléchargement du fichier .exe (LIEN MODIFIÉ CI-DESSOUS)
+  const EXE_DOWNLOAD_URL = "https://github.com/Anthonyz150/dunkly-app/releases/download/v.0.1.2/Dunkly.Setup.0.1.0.exe"; 
 
   useEffect(() => {
     // Vérifier la session actuelle au chargement
