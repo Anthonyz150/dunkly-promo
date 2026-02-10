@@ -2,8 +2,8 @@ import Link from 'next/link';
 
 export default function PromotionPage() {
   // Définissez vos URLs réelles ici
-  const APP_URL = "https://app.dunkly.com";
-  const PROMO_URL = "https://promo.dunkly.com"; // URL de ce site de promo
+  const APP_URL = "https://dunkly-app.vercel.app";
+  const PROMO_URL = "https://dunkly-promo.vercel.app"; // URL de ce site de promo
   
   // URL de redirection encodée pour le lien de connexion
   const loginUrl = `${APP_URL}/login?redirect=${encodeURIComponent(PROMO_URL)}`;
