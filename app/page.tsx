@@ -2,10 +2,11 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { supabase } from "@/lib/supabase"; // Assurez-vous que ce fichier existe
+import { supabase } from "@/lib/supabase"; // Assurez-vous que ce fichier utilise localStorage
 
 export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   
   // URL de ce site de promo
   const PROMO_URL = "https://dunkly.vercel.app"; 
@@ -18,10 +19,21 @@ export default function PromotionPage() {
   useEffect(() => {
     // Vérifier la session actuelle au chargement
     const getSession = async () => {
+      setLoading(true);
       const { data } = await supabase.auth.getSession();
       setUser(data.session?.user);
+      setLoading(false);
     };
     getSession();
+
+    // Écouter les changements d'authentification (connexion/déconnexion)
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user || null);
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
   }, []);
 
   return (
@@ -33,8 +45,10 @@ export default function PromotionPage() {
           <span className='text-3xl'>🏀</span> DUNKLY
         </span>
 
-        {/* Logique d'affichage du bouton */}
-        {user ? (
+        {/* Logique d'affichage du bouton avec état de chargement */}
+        {loading ? (
+          <div className="w-24 h-10 bg-slate-800 animate-pulse rounded-full"></div>
+        ) : user ? (
           <Link 
             href={APP_URL} 
             className="bg-slate-800 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-700 transition shadow-lg"
