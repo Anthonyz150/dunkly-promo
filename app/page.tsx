@@ -2,7 +2,13 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { supabase } from "@/lib/supabase"; // Assurez-vous que ce fichier utilise localStorage
+import { supabase } from "@/lib/supabase"; 
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Dunkly - Plateforme de Résultats de Basket',
+  description: 'Gérez vos championnats, clubs, matchs et résultats en temps réel.',
+};
 
 export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
