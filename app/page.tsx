@@ -26,7 +26,7 @@ export default function PromotionPage() {
     };
     getSession();
 
-    // Écouter les changements d'authentification (connexion/déconnexion)
+    // Écouter les changements d'authentification
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user || null);
     });
@@ -35,6 +35,12 @@ export default function PromotionPage() {
       authListener.subscription.unsubscribe();
     };
   }, []);
+
+  // --- FONCTION POUR OBTENIR L'INITIALE ---
+  const getUserInitial = () => {
+    if (!user) return "";
+    return user.email ? user.email[0].toUpperCase() : "U";
+  };
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -45,17 +51,24 @@ export default function PromotionPage() {
           <span className='text-3xl'>🏀</span> DUNKLY
         </span>
 
-        {/* Logique d'affichage du bouton avec état de chargement */}
+        {/* --- LOGIQUE D'AFFICHAGE MODIFIÉE --- */}
         {loading ? (
-          <div className="w-24 h-10 bg-slate-800 animate-pulse rounded-full"></div>
+          <div className="w-10 h-10 bg-slate-800 animate-pulse rounded-full"></div>
         ) : user ? (
-          <Link 
-            href={APP_URL} 
-            className="bg-slate-800 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-slate-700 transition shadow-lg"
-          >
-            Aller au Dashboard
-          </Link>
+          // Affiche l'initiale du profil à la place du bouton
+          <div className="flex items-center gap-4">
+            <Link 
+              href={APP_URL} 
+              className="text-sm text-slate-400 hover:text-white"
+            >
+              Mon Dashboard
+            </Link>
+            <div className="w-10 h-10 bg-orange-600 text-white rounded-full flex items-center justify-center font-bold text-lg shadow-lg">
+              {getUserInitial()}
+            </div>
+          </div>
         ) : (
+          // Bouton Se connecter
           <Link 
             href={loginUrl} 
             className="bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg"
@@ -65,7 +78,7 @@ export default function PromotionPage() {
         )}
       </nav>
 
-      {/* HERO SECTION */}
+      {/* ... reste du code (Hero, Features, Footer) ... */}
       <header className="py-24 text-center px-6 bg-slate-900 rounded-b-[40px]">
         <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight">
           La plateforme ultime de <br /> gestion de <span className="text-orange-500">Basket-ball</span>.
@@ -83,7 +96,6 @@ export default function PromotionPage() {
         </div>
       </header>
 
-      {/* FEATURES SECTION */}
       <section className="py-24">
         <div className="max-w-6xl mx-auto px-6 grid md:grid-cols-3 gap-8">
           {[
@@ -100,7 +112,6 @@ export default function PromotionPage() {
         </div>
       </section>
 
-      {/* FOOTER SIMPLE */}
       <footer className="border-t border-slate-800 py-12 mt-12 bg-slate-900">
         <div className="max-w-6xl mx-auto px-6 text-center text-slate-500">
           <p className="font-bold text-white mb-2">🏀 DUNKLY</p>
