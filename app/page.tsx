@@ -81,7 +81,7 @@ export default function PromotionPage() {
       {/* ... reste du code (Hero, Features, Footer) ... */}
       <header className="py-24 text-center px-6 bg-slate-900 rounded-b-[40px]">
         <h1 className="text-5xl md:text-6xl font-extrabold text-white leading-tight">
-          La plateforme ultime de <br /> gestion de <span className="text-orange-500">Basket-ball</span>.
+          La plateforme des <br /> résultats de <span className="text-orange-500">Basket-ball</span>.
         </h1>
         <p className="mt-8 text-xl text-slate-300 max-w-2xl mx-auto">
           Gérez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
