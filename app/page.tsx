@@ -33,7 +33,9 @@ export default function PromotionPage() {
     const fetchLatestMatch = async () => {
       const { data } = await supabase
         .from('matchs')
-        .select('*')
+        // --- MODIFICATION : Récupération du logo de la compétition ---
+        .select('*, competitions(logo_url)')
+        // -----------------------------------------------------------
         .order('date', { ascending: false })
         .limit(1)
         .single();
@@ -45,7 +47,7 @@ export default function PromotionPage() {
     // 2. Écouter les changements en temps réel (ÉTAPE 3)
     const channel = supabase
       .channel('match-realtime')
-      .on(
+      .on
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -187,21 +189,21 @@ export default function PromotionPage() {
             {/* Remplacez ces chemins par les URL de vos images */}
             <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
               <img 
-                src="/images/1screenshot-dashboard.png" // Correction ici
+                src="/images/1screenshot-dashboard.png" // Chemin de votre image 1
                 alt="Capture d'écran du tableau de bord Dunkly" 
                 className="w-full h-auto object-cover" 
               />
             </div>
             <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
               <img 
-                src="/images/screenchot-championship.png" // Correction ici
+                src="/images/screenchot-championship.png" // Chemin de votre image 2
                 alt="Capture d'écran de la gestion des championnats" 
                 className="w-full h-auto object-cover" 
               />
             </div>
             <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
               <img 
-                src="/images/screenchot-teams.png" // Correction ici
+                src="/images/screenshot-teams.png" // Chemin de votre image 3
                 alt="Capture d'écran de la gestion des équipes" 
                 className="w-full h-auto object-cover" 
               />
@@ -340,7 +342,14 @@ export default function PromotionPage() {
             </div>
             
             <div className="text-center">
-                <h3 className="text-sm text-slate-400 uppercase tracking-widest">{latestMatch.competition}</h3>
+                {/* --- MODIFICATION : AFFICHAGE LOGO COMPETITION --- */}
+                <div className="flex items-center justify-center gap-3 mb-2">
+                    {latestMatch.competitions?.logo_url && (
+                        <img src={latestMatch.competitions.logo_url} alt="Logo" className="w-8 h-8 object-contain" />
+                    )}
+                    <h3 className="text-sm text-slate-400 uppercase tracking-widest">{latestMatch.competition}</h3>
+                </div>
+                {/* ------------------------------------------------ */}
                 
                 {/* --- BLOC SCORE ET LOGOS MODIFIÉ --- */}
                 <div className="flex justify-center items-center gap-4 my-8">
