@@ -330,7 +330,7 @@ export default function PromotionPage() {
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-2xl w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-white">Dernier Match</h2>
+                <h2 className="text-2xl font-bold text-white">Prochain match</h2>
                 <button
                     onClick={() => setIsMatchModalOpen(false)}
                     className="text-slate-400 hover:text-white text-3xl"
