@@ -7,11 +7,13 @@ import { supabase } from "@/lib/supabase";
 export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  // --- AJOUT DE L'ÉTAT POUR LE DERNIER MATCH ---
-  const [latestMatchId, setLatestMatchId] = useState<string | null>(null);
+  
+  // --- ÉTATS POUR LA MODALE DU MATCH (ÉTAPE 3) ---
+  const [isMatchModalOpen, setIsMatchModalOpen] = useState(false);
+  const [latestMatch, setLatestMatch] = useState<any>(null);
   // ----------------------------------------------
   
-  // --- AJOUT DE L'ÉTAT POUR LA MODALE ---
+  // --- ÉTATS POUR LA MODALE CONDITIONS ---
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   // --------------------------------------
 
@@ -24,21 +26,44 @@ export default function PromotionPage() {
 
   useEffect(() => {
     document.title = "Dunkly - Plateforme de Résultats de Basket";
-    
-    // --- RÉCUPÉRER LE DERNIER MATCH ---
+  }, []);
+
+  useEffect(() => {
+    // 1. Charger le dernier match pour la modale
     const fetchLatestMatch = async () => {
       const { data } = await supabase
         .from('matchs')
-        .select('id')
-        .order('date', { ascending: false }) // Tri par date descendante
+        .select('*')
+        .order('date', { ascending: false })
         .limit(1)
         .single();
       
-      if (data) setLatestMatchId(data.id);
+      if (data) setLatestMatch(data);
     };
     fetchLatestMatch();
-    // ----------------------------------
-  }, []);
+
+    // 2. Écouter les changements en temps réel (ÉTAPE 3)
+    const channel = supabase
+      .channel('match-realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'matchs',
+          filter: latestMatch ? `id=eq.${latestMatch.id}` : undefined, 
+        },
+        (payload) => {
+          console.log('Changement reçu!', payload);
+          setLatestMatch(payload.new); // Met à jour le match dans la modale
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [latestMatch?.id]);
 
   useEffect(() => {
     // Vérifier la session actuelle au chargement
@@ -121,15 +146,13 @@ export default function PromotionPage() {
             Rejoignez-nous dès maintenant
           </Link>
           
-          {/* --- BOUTON VOIR RÉSULTATS (ÉTAPE 3) --- */}
-          {latestMatchId && (
-            <Link
-              href={`/matchs/resultats/${latestMatchId}`}
-              className="inline-block bg-slate-700 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-slate-600 transition"
-            >
-              Voir les derniers résultats
-            </Link>
-          )}
+          {/* --- BOUTON POUR OUVRIR LA MODALE MATCH (ÉTAPE 3) --- */}
+          <button
+            onClick={() => setIsMatchModalOpen(true)}
+            className="inline-block bg-slate-700 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-slate-600 transition"
+          >
+            Voir les derniers résultats
+          </button>
           {/* -------------------------------------- */}
         </div>
       </header>
@@ -269,7 +292,7 @@ export default function PromotionPage() {
         </div>
       </footer>
 
-      {/* --- COMPOSANT MODALE (POP-UP) --- */}
+      {/* --- MODALE CONDITIONS --- */}
       {isTermsOpen && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl">
@@ -302,6 +325,40 @@ export default function PromotionPage() {
       )}
       {/* ---------------------------------- */}
 
+      {/* --- COMPOSANT MODALE MATCH EN DIRECT (ÉTAPE 3) --- */}
+      {isMatchModalOpen && latestMatch && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-2xl w-full shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-white">Dernier Match</h2>
+                <button
+                    onClick={() => setIsMatchModalOpen(false)}
+                    className="text-slate-400 hover:text-white text-3xl"
+                >
+                    &times;
+                </button>
+            </div>
+            
+            <div className="text-center">
+                <h3 className="text-sm text-slate-400 uppercase tracking-widest">{latestMatch.competition}</h3>
+                
+                <div className="flex justify-center items-center gap-6 my-8">
+                    <div className="text-2xl font-bold flex-1 text-right">{latestMatch.clubA}</div>
+                    <div className="text-6xl font-extrabold text-orange-500">{latestMatch.scoreA}</div>
+                    <div className="text-4xl text-slate-600">-</div>
+                    <div className="text-6xl font-extrabold text-orange-500">{latestMatch.scoreB}</div>
+                    <div className="text-2xl font-bold flex-1 text-left">{latestMatch.clubB}</div>
+                </div>
+
+                <p className="text-slate-300 text-lg">📍 {latestMatch.lieu}</p>
+                <p className={`mt-4 font-bold ${latestMatch.status === 'termine' ? 'text-green-400' : 'text-yellow-400'}`}>
+                    {latestMatch.status === 'termine' ? '✅ Match Terminé' : '🕒 Match à venir / En cours'}
+                </p>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* ---------------------------------- */}
     </div>
   );
 }
