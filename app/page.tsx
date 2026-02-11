@@ -3,6 +3,8 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from "@/lib/supabase"; 
+// Note: Metadata ne peut pas être exporté depuis un composant client ("use client").
+// Pour le titre, nous le ferons différemment ci-dessous.
 
 export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
@@ -14,6 +16,12 @@ export default function PromotionPage() {
   const APP_URL = "https://dunkly-app.vercel.app";
   // URL de téléchargement du fichier .exe
   const EXE_DOWNLOAD_URL = "https://github.com/Anthonyz150/dunkly-app/releases/download/v.0.1.2/Dunkly.Setup.0.1.0.exe"; 
+
+  // --- DÉFINIR LE TITRE SUR MOBILE ---
+  useEffect(() => {
+    document.title = "Dunkly - Plateforme de Résultats de Basket";
+  }, []);
+  // ------------------------------------
 
   useEffect(() => {
     // Vérifier la session actuelle au chargement
@@ -67,13 +75,13 @@ export default function PromotionPage() {
             </div>
           </div>
         ) : (
-          // --- LIEN DE TÉLÉCHARGEMENT .EXE (Visible partout) ---
+          // --- LIEN DE TÉLÉCHARGEMENT .EXE (Visible uniquement sur PC: md:flex) ---
           <a 
             href={EXE_DOWNLOAD_URL}
             download="DunklySetup.exe"
-            className="flex bg-orange-600 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-full text-xs md:text-sm font-semibold hover:bg-orange-500 transition shadow-lg items-center gap-2"
+            className="hidden md:flex bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg items-center gap-2"
           >
-            <span>📥</span> <span className='hidden sm:inline'>Télécharger</span>
+            <span>📥</span> Télécharger pour Windows
           </a>
         )}
 
