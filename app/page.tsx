@@ -123,6 +123,29 @@ export default function PromotionPage() {
         </div>
       </section>
 
+      {/* FAQ SECTION */}
+      <section className="py-16 md:py-24 bg-slate-900/50">
+        <div className="max-w-4xl mx-auto px-4 md:px-6">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center mb-12">
+            Questions fréquentes
+          </h2>
+          <div className="space-y-6">
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+              <h4 className="text-lg font-bold text-white">Est-ce que Dunkly est vraiment gratuit ?</h4>
+              <p className="text-slate-400 mt-2">Oui ! Dunkly est 100% gratuit pour les clubs et les joueurs. Il n'y a pas de frais cachés ou d'abonnement premium.</p>
+            </div>
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+              <h4 className="text-lg font-bold text-white">Sur quels appareils puis-je utiliser Dunkly ?</h4>
+              <p className="text-slate-400 mt-2">L'application de gestion est disponible sur Windows (via le téléchargement ci-dessus). Les résultats sont consultables sur n'importe quel navigateur mobile ou ordinateur.</p>
+            </div>
+            <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
+              <h4 className="text-lg font-bold text-white">Comment ça marche ?</h4>
+              <p className="text-slate-400 mt-2">Il vous suffit de créer un compte et le tour est joué. Vous retrouverez ensuite vos équipes avec vos compétitions favorites.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER SIMPLE */}
       <footer className="border-t border-slate-800 py-10 mt-12 bg-slate-900">
         <div className="max-w-6xl mx-auto px-4 md:px-6 text-center text-slate-500">
