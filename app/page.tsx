@@ -29,25 +29,28 @@ export default function PromotionPage() {
   }, []);
 
   useEffect(() => {
-    // 1. Charger le dernier match pour la modale
-    const fetchLatestMatch = async () => {
+    // 1. Charger le PROCHAIN match à venir
+    const fetchNextMatch = async () => {
+      const now = new Date().toISOString(); // Date actuelle au format ISO
+
       const { data } = await supabase
         .from('matchs')
-        // --- MODIFICATION : Récupération du logo de la compétition ---
         .select('*, competitions(logo_url)')
-        // -----------------------------------------------------------
-        .order('date', { ascending: false })
+        // --- CORRECTION : Filtre et tri par date ---
+        .gte('date', now) // Date du match >= Date actuelle
+        .order('date', { ascending: true }) // Le plus proche d'abord
+        // -------------------------------------------
         .limit(1)
         .single();
       
       if (data) setLatestMatch(data);
     };
-    fetchLatestMatch();
+    fetchNextMatch();
 
     // 2. Écouter les changements en temps réel (ÉTAPE 3)
     const channel = supabase
       .channel('match-realtime')
-      .on
+      .on( // <--- CORRECTION ICI : Il manquait le point avant .on()
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -342,16 +345,15 @@ export default function PromotionPage() {
             </div>
             
             <div className="text-center">
-                {/* --- MODIFICATION : AFFICHAGE LOGO COMPETITION --- */}
+                {/* --- AFFICHAGE LOGO COMPETITION --- */}
                 <div className="flex items-center justify-center gap-3 mb-2">
                     {latestMatch.competitions?.logo_url && (
                         <img src={latestMatch.competitions.logo_url} alt="Logo" className="w-8 h-8 object-contain" />
                     )}
                     <h3 className="text-sm text-slate-400 uppercase tracking-widest">{latestMatch.competition}</h3>
                 </div>
-                {/* ------------------------------------------------ */}
                 
-                {/* --- BLOC SCORE ET LOGOS MODIFIÉ --- */}
+                {/* --- BLOC SCORE ET LOGOS --- */}
                 <div className="flex justify-center items-center gap-4 my-8">
                     <div className="flex-1 text-right flex items-center justify-end gap-3">
                         <div className="text-xl font-bold">{latestMatch.clubA}</div>
@@ -381,7 +383,6 @@ export default function PromotionPage() {
                         <div className="text-xl font-bold">{latestMatch.clubB}</div>
                     </div>
                 </div>
-                {/* ---------------------------------- */}
 
                 <p className="text-slate-300 text-lg">📍 {latestMatch.lieu}</p>
                 <p className={`mt-4 font-bold ${latestMatch.status === 'termine' ? 'text-green-400' : 'text-yellow-400'}`}>
