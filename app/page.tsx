@@ -93,7 +93,7 @@ export default function PromotionPage() {
           La plateforme des <br /> résultats de <span className="text-orange-500">Basket-ball</span>.
         </h1>
         <p className="mt-6 md:mt-8 text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
-          Gérez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
+          Retrovez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
         </p>
         <div className="mt-10 md:mt-12">
           {/* --- BOUTON ORANGE --- */}
@@ -110,7 +110,7 @@ export default function PromotionPage() {
       <section className="py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4 md:px-6 grid md:grid-cols-3 gap-6 md:gap-8">
           {[
-            { title: "Gestion Complète", desc: "Clubs, équipes et joueurs au même endroit.", icon: "🛡️", color: "text-blue-400" },
+            { title: "Gestion Complète", desc: "Clubs et équipes au même endroit.", icon: "🛡️", color: "text-blue-400" },
             { title: "Matchs en Direct", desc: "Scores et résultats mis à jour instantanément.", icon: "⏱️", color: "text-green-400" },
             { title: "Championnats", desc: "Suivez les classements de toutes vos compétitions.", icon: "🏆", color: "text-yellow-400" },
           ].map((feature, i) => (
