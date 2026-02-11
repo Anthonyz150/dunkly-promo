@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { supabase } from "@/lib/supabase";
-import { Analytics } from "@vercel/analytics/next"
-// Note: Metadata ne peut pas être exporté depuis un composant client ("use client").
-// Pour le titre, nous le ferons différemment ci-dessous.
 
 export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  // --- AJOUT DE L'ÉTAT POUR LA MODALE ---
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
+  // --------------------------------------
   
   // URL de ce site de promo
   const PROMO_URL = "https://dunkly.vercel.app"; 
@@ -152,11 +152,50 @@ export default function PromotionPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-6 text-center text-slate-500">
           <p className="font-bold text-white mb-2">🏀 DUNKLY</p>
           <p className='text-sm'>© 2026 Dunkly. Tous droits réservés.</p>
-          <Link href="/terms" className="text-sm text-slate-600 hover:text-white underline">
+          {/* --- BOUTON POUR OUVRIR LA MODALE --- */}
+          <button 
+            onClick={() => setIsTermsOpen(true)}
+            className="text-sm text-slate-600 hover:text-white underline bg-transparent border-none p-0 cursor-pointer"
+          >
             Conditions d'utilisation
-          </Link>
+          </button>
+          {/* ------------------------------------ */}
         </div>
       </footer>
+
+      {/* --- COMPOSANT MODALE (POP-UP) --- */}
+      {isTermsOpen && (
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-white">Conditions d'utilisation</h2>
+              <button 
+                onClick={() => setIsTermsOpen(false)}
+                className="text-slate-400 hover:text-white text-3xl"
+              >
+                &times;
+              </button>
+            </div>
+            <div className="prose prose-invert text-slate-300">
+              <p>Dernière mise à jour : 11 février 2026</p>
+              
+              <h3 className="text-xl font-bold text-white mt-4">1. Acceptation des conditions</h3>
+              <p>En utilisant Dunkly, vous acceptez d'être lié par ces conditions d'utilisation.</p>
+              
+              <h3 className="text-xl font-bold text-white mt-4">2. Description du service</h3>
+              <p>Dunkly est une plateforme gratuite de gestion de résultats de basket-ball.</p>
+              
+              <h3 className="text-xl font-bold text-white mt-4">3. Confidentialité</h3>
+              <p>Vos données sont traitées avec soin. Nous ne vendons pas vos informations personnelles.</p>
+              
+              <h3 className="text-xl font-bold text-white mt-4">4. Modification du service</h3>
+              <p>Nous nous réservons le droit de modifier ou d'interrompre le service à tout moment.</p>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* ---------------------------------- */}
+
     </div>
   );
 }
