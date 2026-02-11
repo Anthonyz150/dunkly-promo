@@ -156,7 +156,7 @@ export default function PromotionPage() {
             onClick={() => setIsMatchModalOpen(true)}
             className="inline-block bg-slate-700 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-slate-600 transition"
           >
-            Voir les derniers résultats
+            Voir le prochain match
           </button>
           {/* -------------------------------------- */}
         </div>
