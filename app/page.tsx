@@ -152,6 +152,9 @@ export default function PromotionPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-6 text-center text-slate-500">
           <p className="font-bold text-white mb-2">🏀 DUNKLY</p>
           <p className='text-sm'>© 2026 Dunkly. Tous droits réservés.</p>
+          <Link href="/terms" className="text-sm text-slate-600 hover:text-white underline">
+            Conditions d'utilisation
+          </Link>
         </div>
       </footer>
     </div>
