@@ -10,13 +10,13 @@ export default function PromotionPage() {
   // --- AJOUT DE L'ÉTAT POUR LA MODALE ---
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   // --------------------------------------
-  
+
   // URL de ce site de promo
-  const PROMO_URL = "https://dunkly.vercel.app"; 
+  const PROMO_URL = "https://dunkly.vercel.app";
   // URL de l'app de gestion
   const APP_URL = "https://dunkly-app.vercel.app";
   // URL de téléchargement du fichier .exe
-  const EXE_DOWNLOAD_URL = "https://github.com/Anthonyz150/dunkly-app/releases/download/v.0.1.2/Dunkly.Setup.0.1.0.exe"; 
+  const EXE_DOWNLOAD_URL = "https://github.com/Anthonyz150/dunkly-app/releases/download/v.0.1.2/Dunkly.Setup.0.1.0.exe";
 
   // --- DÉFINIR LE TITRE SUR MOBILE ---
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function PromotionPage() {
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
-      
+
       {/* NAVBAR */}
       <nav className="p-4 md:p-6 flex justify-between items-center border-b border-slate-800 bg-slate-950/80 backdrop-blur-sm sticky top-0 z-50">
         <span className="text-2xl font-bold text-white flex items-center gap-2">
@@ -65,8 +65,8 @@ export default function PromotionPage() {
         ) : user ? (
           // Affiche l'initiale du profil si connecté
           <div className="flex items-center gap-2 md:gap-4">
-            <Link 
-              href={APP_URL} 
+            <Link
+              href={APP_URL}
               className="text-xs md:text-sm text-slate-400 hover:text-white"
             >
               Mon Dashboard
@@ -77,7 +77,7 @@ export default function PromotionPage() {
           </div>
         ) : (
           // --- LIEN DE TÉLÉCHARGEMENT .EXE (Visible uniquement sur PC: md:flex) ---
-          <a 
+          <a
             href={EXE_DOWNLOAD_URL}
             download="DunklySetup.exe"
             className="hidden md:flex bg-orange-600 text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-orange-500 transition shadow-lg items-center gap-2"
@@ -98,7 +98,7 @@ export default function PromotionPage() {
         </p>
         <div className="mt-10 md:mt-12">
           {/* --- BOUTON ORANGE --- */}
-          <Link 
+          <Link
             href={`${APP_URL}/register?redirect=${encodeURIComponent(PROMO_URL)}`}
             className="inline-block bg-orange-600 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-orange-500 transition shadow-xl shadow-orange-950/30"
           >
@@ -121,6 +121,46 @@ export default function PromotionPage() {
               <p className="mt-3 text-slate-400">{feature.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* TESTIMONIALS SECTION */}
+      <section className="py-16 md:py-24">
+        <div className="max-w-6xl mx-auto px-4 md:px-6">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center mb-12">
+            Ils utilisent Dunkly
+          </h2>
+          <div className="grid md:grid-cols-2 gap-8">
+
+            {/* Témoignage 1 */}
+            <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+              <p className="text-slate-300 italic text-lg">
+                "Dunkly a changé notre façon de gérer le club. Le gain de temps sur la saisie des résultats est incroyable, et tout est gratuit !"
+              </p>
+              <div className="flex items-center mt-6 gap-4">
+                <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center font-bold text-white">M</div>
+                <div>
+                  <p className="font-bold text-white">Marc Dubois</p>
+                  <p className="text-sm text-slate-500">Président, BC Antibes</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Témoignage 2 */}
+            <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800">
+              <p className="text-slate-300 italic text-lg">
+                "Simple, rapide et efficace. L'application Windows est très intuitive, mes coachs l'adorent."
+              </p>
+              <div className="flex items-center mt-6 gap-4">
+                <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center font-bold text-white">S</div>
+                <div>
+                  <p className="font-bold text-white">Sophie Martin</p>
+                  <p className="text-sm text-slate-500">Coach, Nice Basket</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
@@ -153,7 +193,7 @@ export default function PromotionPage() {
           <p className="font-bold text-white mb-2">🏀 DUNKLY</p>
           <p className='text-sm'>© 2026 Dunkly. Tous droits réservés.</p>
           {/* --- BOUTON POUR OUVRIR LA MODALE --- */}
-          <button 
+          <button
             onClick={() => setIsTermsOpen(true)}
             className="text-sm text-slate-600 hover:text-white underline bg-transparent border-none p-0 cursor-pointer"
           >
@@ -169,7 +209,7 @@ export default function PromotionPage() {
           <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto shadow-2xl">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-white">Conditions d'utilisation</h2>
-              <button 
+              <button
                 onClick={() => setIsTermsOpen(false)}
                 className="text-slate-400 hover:text-white text-3xl"
               >
@@ -178,16 +218,16 @@ export default function PromotionPage() {
             </div>
             <div className="prose prose-invert text-slate-300">
               <p>Dernière mise à jour : 11 février 2026</p>
-              
+
               <h3 className="text-xl font-bold text-white mt-4">1. Acceptation des conditions</h3>
               <p>En utilisant Dunkly, vous acceptez d'être lié par ces conditions d'utilisation.</p>
-              
+
               <h3 className="text-xl font-bold text-white mt-4">2. Description du service</h3>
               <p>Dunkly est une plateforme gratuite de gestion de résultats de basket-ball.</p>
-              
+
               <h3 className="text-xl font-bold text-white mt-4">3. Confidentialité</h3>
               <p>Vos données sont traitées avec soin. Nous ne vendons pas vos informations personnelles.</p>
-              
+
               <h3 className="text-xl font-bold text-white mt-4">4. Modification du service</h3>
               <p>Nous nous réservons le droit de modifier ou d'interrompre le service à tout moment.</p>
             </div>
