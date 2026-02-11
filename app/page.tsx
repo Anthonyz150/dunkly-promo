@@ -136,7 +136,7 @@ export default function PromotionPage() {
             </div>
             <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
               <h4 className="text-lg font-bold text-white">Sur quels appareils puis-je utiliser Dunkly ?</h4>
-              <p className="text-slate-400 mt-2">L'application de gestion est disponible sur Windows (via le téléchargement ci-dessus). Les résultats sont consultables sur n'importe quel navigateur mobile ou ordinateur.</p>
+              <p className="text-slate-400 mt-2">L'application est disponible en téléchargement sur Windows (via le téléchargement ci-dessus). Les résultats sont consultables sur n'importe quel navigateur mobile ou ordinateur.</p>
             </div>
             <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
               <h4 className="text-lg font-bold text-white">Comment ça marche ?</h4>
