@@ -135,7 +135,7 @@ export default function PromotionPage() {
           La plateforme des <br /> résultats de <span className="text-orange-500">Basket-ball</span>.
         </h1>
         <p className="mt-6 md:mt-8 text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
-          Retrovez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
+          Retrouvez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
         </p>
         <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
           {/* --- BOUTON REJOINDRE --- */}
@@ -181,7 +181,7 @@ export default function PromotionPage() {
             Aperçu de l'application
           </h2>
           <p className="text-lg text-slate-300 max-w-3xl mx-auto mb-12">
-            Découvrez l'interface intuitive de Dunkly et facilitez la gestion de votre club.
+            Découvrez l'interface intuitive de Dunkly et facilitez l'affichage des résultats.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Remplacez ces chemins par les URL de vos images */}
@@ -224,7 +224,7 @@ export default function PromotionPage() {
             {/* Témoignage 1 */}
             <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800">
               <p className="text-slate-300 italic text-lg">
-                "Dunkly a changé notre façon de suivre notre club. La saisie des résultats est parfaite, et tout est incroyable !"
+                "Dunkly a changé ma vison sur le basketball. Le dynamisme des résultats est incroyable !"
               </p>
               <div className="flex items-center mt-6 gap-4">
                 <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center font-bold text-white">M</div>
@@ -262,7 +262,7 @@ export default function PromotionPage() {
           <div className="space-y-6">
             <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
               <h4 className="text-lg font-bold text-white">Est-ce que Dunkly est vraiment gratuit ?</h4>
-              <p className="text-slate-400 mt-2">Oui ! Dunkly est 100% gratuit pour les clubs et les joueurs. Il n'y a pas de frais cachés ou d'abonnement premium.</p>
+              <p className="text-slate-400 mt-2">Oui ! Dunkly est 100% gratuit pour les amateurs de basketball. Il n'y a pas d'abonnement requis.</p>
             </div>
             <div className="bg-slate-900 p-6 rounded-2xl border border-slate-800">
               <h4 className="text-lg font-bold text-white">Sur quels appareils puis-je utiliser Dunkly ?</h4>
