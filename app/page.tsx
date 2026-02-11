@@ -187,21 +187,21 @@ export default function PromotionPage() {
             {/* Remplacez ces chemins par les URL de vos images */}
             <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
               <img 
-                src="/images/screenshot-dashboard.png" // Chemin de votre image 1
+                src="/images/1screenshot-dashboard.png" // Correction ici
                 alt="Capture d'écran du tableau de bord Dunkly" 
                 className="w-full h-auto object-cover" 
               />
             </div>
             <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
               <img 
-                src="/images/screenshot-championship.png" // Chemin de votre image 2
+                src="/images/screenchot-championship.png" // Correction ici
                 alt="Capture d'écran de la gestion des championnats" 
                 className="w-full h-auto object-cover" 
               />
             </div>
             <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
               <img 
-                src="/images/screenshot-team.png" // Chemin de votre image 3
+                src="/images/screenshot-teams.png" // Correction ici
                 alt="Capture d'écran de la gestion des équipes" 
                 className="w-full h-auto object-cover" 
               />
