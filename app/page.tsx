@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { supabase } from "@/lib/supabase"; 
+import { supabase } from "@/lib/supabase";
+import { Analytics } from "@vercel/analytics/next"
 // Note: Metadata ne peut pas être exporté depuis un composant client ("use client").
 // Pour le titre, nous le ferons différemment ci-dessous.
 
