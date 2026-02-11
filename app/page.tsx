@@ -342,13 +342,37 @@ export default function PromotionPage() {
             <div className="text-center">
                 <h3 className="text-sm text-slate-400 uppercase tracking-widest">{latestMatch.competition}</h3>
                 
-                <div className="flex justify-center items-center gap-6 my-8">
-                    <div className="text-2xl font-bold flex-1 text-right">{latestMatch.clubA}</div>
-                    <div className="text-6xl font-extrabold text-orange-500">{latestMatch.scoreA}</div>
-                    <div className="text-4xl text-slate-600">-</div>
-                    <div className="text-6xl font-extrabold text-orange-500">{latestMatch.scoreB}</div>
-                    <div className="text-2xl font-bold flex-1 text-left">{latestMatch.clubB}</div>
+                {/* --- BLOC SCORE ET LOGOS MODIFIÉ --- */}
+                <div className="flex justify-center items-center gap-4 my-8">
+                    <div className="flex-1 text-right flex items-center justify-end gap-3">
+                        <div className="text-xl font-bold">{latestMatch.clubA}</div>
+                        {latestMatch.logo_urlA ? (
+                            <img src={latestMatch.logo_urlA} alt={latestMatch.clubA} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
+                        ) : (
+                            <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
+                                {latestMatch.clubA[0]}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <div className="text-5xl font-extrabold text-orange-500">{latestMatch.scoreA ?? 0}</div>
+                        <div className="text-3xl text-slate-600 font-bold">-</div>
+                        <div className="text-5xl font-extrabold text-orange-500">{latestMatch.scoreB ?? 0}</div>
+                    </div>
+
+                    <div className="flex-1 text-left flex items-center justify-start gap-3">
+                        {latestMatch.logo_urlB ? (
+                            <img src={latestMatch.logo_urlB} alt={latestMatch.clubB} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
+                        ) : (
+                            <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
+                                {latestMatch.clubB[0]}
+                            </div>
+                        )}
+                        <div className="text-xl font-bold">{latestMatch.clubB}</div>
+                    </div>
                 </div>
+                {/* ---------------------------------- */}
 
                 <p className="text-slate-300 text-lg">📍 {latestMatch.lieu}</p>
                 <p className={`mt-4 font-bold ${latestMatch.status === 'termine' ? 'text-green-400' : 'text-yellow-400'}`}>
