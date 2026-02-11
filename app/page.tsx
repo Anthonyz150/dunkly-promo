@@ -7,6 +7,10 @@ import { supabase } from "@/lib/supabase";
 export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  // --- AJOUT DE L'ÉTAT POUR LE DERNIER MATCH ---
+  const [latestMatchId, setLatestMatchId] = useState<string | null>(null);
+  // ----------------------------------------------
+  
   // --- AJOUT DE L'ÉTAT POUR LA MODALE ---
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   // --------------------------------------
@@ -18,11 +22,23 @@ export default function PromotionPage() {
   // URL de téléchargement du fichier .exe
   const EXE_DOWNLOAD_URL = "https://github.com/Anthonyz150/dunkly-app/releases/download/v.0.1.2/Dunkly.Setup.0.1.0.exe";
 
-  // --- DÉFINIR LE TITRE SUR MOBILE ---
   useEffect(() => {
     document.title = "Dunkly - Plateforme de Résultats de Basket";
+    
+    // --- RÉCUPÉRER LE DERNIER MATCH ---
+    const fetchLatestMatch = async () => {
+      const { data } = await supabase
+        .from('matchs')
+        .select('id')
+        .order('date', { ascending: false }) // Tri par date descendante
+        .limit(1)
+        .single();
+      
+      if (data) setLatestMatchId(data.id);
+    };
+    fetchLatestMatch();
+    // ----------------------------------
   }, []);
-  // ------------------------------------
 
   useEffect(() => {
     // Vérifier la session actuelle au chargement
@@ -96,14 +112,25 @@ export default function PromotionPage() {
         <p className="mt-6 md:mt-8 text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
           Retrovez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
         </p>
-        <div className="mt-10 md:mt-12">
-          {/* --- BOUTON ORANGE --- */}
+        <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
+          {/* --- BOUTON REJOINDRE --- */}
           <Link
             href={`${APP_URL}/register?redirect=${encodeURIComponent(PROMO_URL)}`}
             className="inline-block bg-orange-600 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-orange-500 transition shadow-xl shadow-orange-950/30"
           >
             Rejoignez-nous dès maintenant
           </Link>
+          
+          {/* --- BOUTON VOIR RÉSULTATS (ÉTAPE 3) --- */}
+          {latestMatchId && (
+            <Link
+              href={`/matchs/resultats/${latestMatchId}`}
+              className="inline-block bg-slate-700 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-slate-600 transition"
+            >
+              Voir les derniers résultats
+            </Link>
+          )}
+          {/* -------------------------------------- */}
         </div>
       </header>
 
