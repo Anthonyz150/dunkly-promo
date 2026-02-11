@@ -124,6 +124,45 @@ export default function PromotionPage() {
         </div>
       </section>
 
+      {/* APERÇU DE L'APPLICATION (SCREENSHOTS) */}
+      <section className="py-16 md:py-24 bg-slate-900/50">
+        <div className="max-w-6xl mx-auto px-4 md:px-6 text-center">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-12">
+            Aperçu de l'application
+          </h2>
+          <p className="text-lg text-slate-300 max-w-3xl mx-auto mb-12">
+            Découvrez l'interface intuitive de Dunkly et facilitez la gestion de votre club.
+          </p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Remplacez ces chemins par les URL de vos images */}
+            <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+              <img 
+                src="/images/screenshot-dashboard.png" // Chemin de votre image 1
+                alt="Capture d'écran du tableau de bord Dunkly" 
+                className="w-full h-auto object-cover" 
+              />
+            </div>
+            <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+              <img 
+                src="/images/screenshot-championship.png" // Chemin de votre image 2
+                alt="Capture d'écran de la gestion des championnats" 
+                className="w-full h-auto object-cover" 
+              />
+            </div>
+            <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+              <img 
+                src="/images/screenshot-team.png" // Chemin de votre image 3
+                alt="Capture d'écran de la gestion des équipes" 
+                className="w-full h-auto object-cover" 
+              />
+            </div>
+          </div>
+          <p className="mt-12 text-md text-slate-400">
+            *Les interfaces peuvent varier légèrement en fonction des mises à jour.
+          </p>
+        </div>
+      </section>
+
       {/* TESTIMONIALS SECTION */}
       <section className="py-16 md:py-24">
         <div className="max-w-6xl mx-auto px-4 md:px-6">
