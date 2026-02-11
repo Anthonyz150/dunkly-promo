@@ -135,13 +135,13 @@ export default function PromotionPage() {
             {/* Témoignage 1 */}
             <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800">
               <p className="text-slate-300 italic text-lg">
-                "Dunkly a changé notre façon de gérer le club. Le gain de temps sur la saisie des résultats est incroyable, et tout est gratuit !"
+                "Dunkly a changé notre façon de suivre notre club. La saisie des résultats est parfaite, et tout est incroyable !"
               </p>
               <div className="flex items-center mt-6 gap-4">
                 <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center font-bold text-white">M</div>
                 <div>
                   <p className="font-bold text-white">Marc Dubois</p>
-                  <p className="text-sm text-slate-500">Président, BC Antibes</p>
+                  <p className="text-sm text-slate-500">Utilisateur</p>
                 </div>
               </div>
             </div>
@@ -149,13 +149,13 @@ export default function PromotionPage() {
             {/* Témoignage 2 */}
             <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800">
               <p className="text-slate-300 italic text-lg">
-                "Simple, rapide et efficace. L'application Windows est très intuitive, mes coachs l'adorent."
+                "Simple, rapide et efficace. L'application Windows est très intuitive."
               </p>
               <div className="flex items-center mt-6 gap-4">
                 <div className="w-12 h-12 bg-slate-700 rounded-full flex items-center justify-center font-bold text-white">S</div>
                 <div>
                   <p className="font-bold text-white">Sophie Martin</p>
-                  <p className="text-sm text-slate-500">Coach, Nice Basket</p>
+                  <p className="text-sm text-slate-500">Utilisateur</p>
                 </div>
               </div>
             </div>
