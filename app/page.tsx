@@ -206,7 +206,7 @@ export default function PromotionPage() {
             </div>
             <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
               <img 
-                src="/images/screenshot-teams.png" // Chemin de votre image 3
+                src="/images/screenchot-teams.png" // Chemin de votre image 3
                 alt="Capture d'écran de la gestion des équipes" 
                 className="w-full h-auto object-cover" 
               />
