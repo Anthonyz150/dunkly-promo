@@ -17,6 +17,10 @@ export default function PromotionPage() {
   const [isTermsOpen, setIsTermsOpen] = useState(false);
   // --------------------------------------
 
+  // --- NOUVEL ÉTAT POUR LA LIGHTBOX (IMAGE EN GRAND) ---
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  // -----------------------------------------------------
+
   // URL de ce site de promo
   const PROMO_URL = "https://dunkly.vercel.app";
   // URL de l'app de gestion
@@ -95,6 +99,13 @@ export default function PromotionPage() {
     if (!user) return "";
     return user.email ? user.email[0].toUpperCase() : "U";
   };
+
+  // --- DONNÉES DES IMAGES POUR LA LIGHTBOX ---
+  const screenshotData = [
+    { src: "/images/1screenshot-dashboard.png", alt: "Capture d'écran du tableau de bord Dunkly" },
+    { src: "/images/screenchot-championship.png", alt: "Capture d'écran de la gestion des championnats" },
+    { src: "/images/screenchot-teams.png", alt: "Capture d'écran de la gestion des équipes" }
+  ];
 
   return (
     <div className="min-h-screen bg-slate-950 text-slate-100">
@@ -189,28 +200,20 @@ export default function PromotionPage() {
             Découvrez l'interface intuitive de Dunkly et facilitez l'affichage des résultats.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Remplacez ces chemins par les URL de vos images */}
-            <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
-              <img 
-                src="/images/1screenshot-dashboard.png" // Chemin de votre image 1
-                alt="Capture d'écran du tableau de bord Dunkly" 
-                className="w-full h-auto object-cover" 
-              />
-            </div>
-            <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
-              <img 
-                src="/images/screenchot-championship.png" // Chemin de votre image 2
-                alt="Capture d'écran de la gestion des championnats" 
-                className="w-full h-auto object-cover" 
-              />
-            </div>
-            <div className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
-              <img 
-                src="/images/screenchot-teams.png" // Chemin de votre image 3
-                alt="Capture d'écran de la gestion des équipes" 
-                className="w-full h-auto object-cover" 
-              />
-            </div>
+            {screenshotData.map((screenshot, index) => (
+              <div 
+                key={index} 
+                // Ajout de classes de survol et curseur pour indiquer l'interactivité
+                className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl cursor-pointer transform transition hover:scale-105 hover:border-orange-500"
+                onClick={() => setSelectedImage(screenshot.src)}
+              >
+                <img 
+                  src={screenshot.src}
+                  alt={screenshot.alt} 
+                  className="w-full h-auto object-cover" 
+                />
+              </div>
+            ))}
           </div>
           <p className="mt-12 text-md text-slate-400">
             *Les interfaces peuvent varier légèrement en fonction des mises à jour.
@@ -393,6 +396,41 @@ export default function PromotionPage() {
         </div>
       )}
       {/* ---------------------------------- */}
+
+      {/* --- LIGHTBOX (MODALE IMAGE AGRANDIE) --- */}
+      {selectedImage && (
+        <div 
+          className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4 cursor-zoom-out animate-fadeIn"
+          onClick={() => setSelectedImage(null)} // Fermer au clic sur le fond
+        >
+          <div className="relative max-w-7xl max-h-[90vh]">
+            <img 
+              src={selectedImage} 
+              alt="Aperçu agrandi" 
+              className="max-w-full max-h-[90vh] rounded-lg shadow-2xl"
+            />
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute -top-12 -right-4 text-white text-4xl p-2 hover:text-orange-500 transition"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
+      {/* ------------------------------------------ */}
+      
+      {/* Ajout d'une petite animation CSS pour la lightbox */}
+      <style jsx global>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+      `}</style>
+
     </div>
   );
 }
