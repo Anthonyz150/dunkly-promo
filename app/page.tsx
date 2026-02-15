@@ -156,7 +156,7 @@ export default function PromotionPage() {
         <div className="mt-10 md:mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
           {/* --- BOUTON REJOINDRE --- */}
           <Link
-            href={`${APP_URL}/register?redirect=${encodeURIComponent(PROMO_URL)}`}
+            href={`${APP_URL}/login?redirect=${encodeURIComponent(PROMO_URL)}`}
             className="inline-block bg-orange-600 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-orange-500 transition shadow-xl shadow-orange-950/30"
           >
             Rejoignez-nous dès maintenant
