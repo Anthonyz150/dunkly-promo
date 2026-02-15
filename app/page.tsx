@@ -11,6 +11,7 @@ export default function PromotionPage() {
   // --- ÉTATS POUR LA MODALE DU MATCH ---
   const [isMatchModalOpen, setIsMatchModalOpen] = useState(false);
   const [latestMatch, setLatestMatch] = useState<any>(null);
+  const [noMatchFound, setNoMatchFound] = useState(false); // ✅ État pour gérer l'absence de match
   // ----------------------------------------------
   
   // --- ÉTATS POUR LA MODALE CONDITIONS ---
@@ -39,22 +40,22 @@ export default function PromotionPage() {
 
       const { data, error } = await supabase
         .from('matchs')
-        // ✅ Jointure pour récupérer les infos de compétition
         .select('*, competition(*)') 
         .gte('date', now) // Date du match >= Date actuelle
         .order('date', { ascending: true }) // Le plus proche d'abord
-        .limit(1); // ✅ Supprimé .single() pour éviter l'erreur si 0 résultat
+        .limit(1);
       
       if (error) {
         console.error("Erreur Supabase:", error);
       }
       
-      // ✅ Correction de la gestion de l'erreur 0 résultats
       if (data && data.length > 0) {
         setLatestMatch(data[0]);
+        setNoMatchFound(false); // ✅ Match trouvé
       } else {
         console.log("Aucun match à venir trouvé.");
         setLatestMatch(null); 
+        setNoMatchFound(true); // ✅ Aucun match trouvé
       }
     };
     fetchNextMatch();
@@ -330,11 +331,13 @@ export default function PromotionPage() {
       {/* ---------------------------------- */}
 
       {/* --- COMPOSANT MODALE MATCH EN DIRECT --- */}
-      {isMatchModalOpen && latestMatch && (
+      {isMatchModalOpen && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-2xl w-full shadow-2xl">
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-white">Prochain match</h2>
+                <h2 className="text-2xl font-bold text-white">
+                  {noMatchFound ? "Prochain match" : "Prochain match"}
+                </h2>
                 <button
                     onClick={() => setIsMatchModalOpen(false)}
                     className="text-slate-400 hover:text-white text-3xl"
@@ -343,54 +346,62 @@ export default function PromotionPage() {
                 </button>
             </div>
             
-            <div className="text-center">
-                {/* --- AFFICHAGE LOGO COMPETITION --- */}
-                <div className="flex items-center justify-center gap-3 mb-2">
-                    {/* Accès sécurisé au nom et logo via la jointure */}
-                    {latestMatch.competition?.logo_url && (
-                        <img src={latestMatch.competition.logo_url} alt="Logo" className="w-8 h-8 object-contain" />
-                    )}
-                    <h3 className="text-sm text-slate-400 uppercase tracking-widest">
-                        {latestMatch.competition?.nom || "Compétition"}
-                    </h3>
-                </div>
-                
-                {/* --- BLOC SCORE ET LOGOS --- */}
-                <div className="flex justify-center items-center gap-4 my-8">
-                    <div className="flex-1 text-right flex items-center justify-end gap-3">
-                        <div className="text-xl font-bold">{latestMatch.clubA}</div>
-                        {latestMatch.logo_urlA ? (
-                            <img src={latestMatch.logo_urlA} alt={latestMatch.clubA} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
-                        ) : (
-                            <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
-                                {latestMatch.clubA ? latestMatch.clubA[0] : "A"}
-                            </div>
-                        )}
-                    </div>
+            {/* ✅ LOGIQUE D'AFFICHAGE DANS LA MODALE */}
+            {noMatchFound ? (
+              <div className="text-center py-10">
+                <p className="text-4xl mb-4">🗓️</p>
+                <h3 className="text-xl font-bold text-white">Aucun match à venir</h3>
+                <p className="text-slate-400 mt-2">Revenez plus tard pour découvrir les prochaines rencontres !</p>
+              </div>
+            ) : latestMatch && (
+              <div className="text-center">
+                  {/* --- AFFICHAGE LOGO COMPETITION --- */}
+                  <div className="flex items-center justify-center gap-3 mb-2">
+                      {latestMatch.competition?.logo_url && (
+                          <img src={latestMatch.competition.logo_url} alt="Logo" className="w-8 h-8 object-contain" />
+                      )}
+                      <h3 className="text-sm text-slate-400 uppercase tracking-widest">
+                          {latestMatch.competition?.nom || "Compétition"}
+                      </h3>
+                  </div>
+                  
+                  {/* --- BLOC SCORE ET LOGOS --- */}
+                  <div className="flex justify-center items-center gap-4 my-8">
+                      <div className="flex-1 text-right flex items-center justify-end gap-3">
+                          <div className="text-xl font-bold">{latestMatch.clubA}</div>
+                          {latestMatch.logo_urlA ? (
+                              <img src={latestMatch.logo_urlA} alt={latestMatch.clubA} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
+                          ) : (
+                              <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
+                                  {latestMatch.clubA ? latestMatch.clubA[0] : "A"}
+                              </div>
+                          )}
+                      </div>
 
-                    <div className="flex items-center gap-3">
-                        <div className="text-5xl font-extrabold text-orange-500">{latestMatch.scoreA ?? 0}</div>
-                        <div className="text-3xl text-slate-600 font-bold">-</div>
-                        <div className="text-5xl font-extrabold text-orange-500">{latestMatch.scoreB ?? 0}</div>
-                    </div>
+                      <div className="flex items-center gap-3">
+                          <div className="text-5xl font-extrabold text-orange-500">{latestMatch.scoreA ?? 0}</div>
+                          <div className="text-3xl text-slate-600 font-bold">-</div>
+                          <div className="text-5xl font-extrabold text-orange-500">{latestMatch.scoreB ?? 0}</div>
+                      </div>
 
-                    <div className="flex-1 text-left flex items-center justify-start gap-3">
-                        {latestMatch.logo_urlB ? (
-                            <img src={latestMatch.logo_urlB} alt={latestMatch.clubB} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
-                        ) : (
-                            <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
-                                {latestMatch.clubB ? latestMatch.clubB[0] : "B"}
-                            </div>
-                        )}
-                        <div className="text-xl font-bold">{latestMatch.clubB}</div>
-                    </div>
-                </div>
+                      <div className="flex-1 text-left flex items-center justify-start gap-3">
+                          {latestMatch.logo_urlB ? (
+                              <img src={latestMatch.logo_urlB} alt={latestMatch.clubB} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
+                          ) : (
+                              <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
+                                  {latestMatch.clubB ? latestMatch.clubB[0] : "B"}
+                              </div>
+                          )}
+                          <div className="text-xl font-bold">{latestMatch.clubB}</div>
+                      </div>
+                  </div>
 
-                <p className="text-slate-300 text-lg">📍 {latestMatch.lieu}</p>
-                <p className={`mt-4 font-bold ${latestMatch.status === 'termine' ? 'text-green-400' : 'text-yellow-400'}`}>
-                    {latestMatch.status === 'termine' ? '✅ Match Terminé' : '🕒 Match à venir / En cours'}
-                </p>
-            </div>
+                  <p className="text-slate-300 text-lg">📍 {latestMatch.lieu}</p>
+                  <p className={`mt-4 font-bold ${latestMatch.status === 'termine' ? 'text-green-400' : 'text-yellow-400'}`}>
+                      {latestMatch.status === 'termine' ? '✅ Match Terminé' : '🕒 Match à venir / En cours'}
+                  </p>
+              </div>
+            )}
           </div>
         </div>
       )}
