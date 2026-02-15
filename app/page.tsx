@@ -35,19 +35,27 @@ export default function PromotionPage() {
   useEffect(() => {
     // 1. Charger le PROCHAIN match à venir
     const fetchNextMatch = async () => {
-      const now = new Date().toISOString(); // Date actuelle au format ISO
+      const now = new Date().toISOString(); 
 
       const { data, error } = await supabase
         .from('matchs')
-        // ✅ CORRECTION 1: Jointure pour récupérer la compétition liée à l'ID
+        // ✅ Jointure pour récupérer les infos de compétition
         .select('*, competition(*)') 
         .gte('date', now) // Date du match >= Date actuelle
         .order('date', { ascending: true }) // Le plus proche d'abord
-        .limit(1)
-        .single();
+        .limit(1); // ✅ Supprimé .single() pour éviter l'erreur si 0 résultat
       
-      if (error) console.error("Erreur Supabase:", error);
-      if (data) setLatestMatch(data);
+      if (error) {
+        console.error("Erreur Supabase:", error);
+      }
+      
+      // ✅ Correction de la gestion de l'erreur 0 résultats
+      if (data && data.length > 0) {
+        setLatestMatch(data[0]);
+      } else {
+        console.log("Aucun match à venir trouvé.");
+        setLatestMatch(null); 
+      }
     };
     fetchNextMatch();
 
@@ -64,7 +72,6 @@ export default function PromotionPage() {
         },
         (payload) => {
           console.log('Changement reçu!', payload);
-          // ✅ CORRECTION 2: Mise à jour sécurisée de l'état
           setLatestMatch(payload.new);
         }
       )
@@ -339,7 +346,7 @@ export default function PromotionPage() {
             <div className="text-center">
                 {/* --- AFFICHAGE LOGO COMPETITION --- */}
                 <div className="flex items-center justify-center gap-3 mb-2">
-                    {/* ✅ CORRECTION 3: Accès sécurisé au nom et logo via la jointure */}
+                    {/* Accès sécurisé au nom et logo via la jointure */}
                     {latestMatch.competition?.logo_url && (
                         <img src={latestMatch.competition.logo_url} alt="Logo" className="w-8 h-8 object-contain" />
                     )}
