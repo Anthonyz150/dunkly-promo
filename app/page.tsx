@@ -157,7 +157,7 @@ export default function PromotionPage() {
       {/* HERO SECTION */}
       <header className="py-16 md:py-24 text-center px-4 md:px-6 bg-slate-900 rounded-b-[30px] md:rounded-b-[40px]">
         <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight">
-          La plateforme des <br /> résultats de <span className="text-orange-500">Basket-ball</span>.
+          La plateforme des <br /> résultats de <span className="text-orange-500">Basketball</span>.
         </h1>
         <p className="mt-6 md:mt-8 text-lg md:text-xl text-slate-300 max-w-2xl mx-auto">
           Retrouvez vos championnats, clubs, matchs et résultats en temps réel. Simple, rapide, efficace.
