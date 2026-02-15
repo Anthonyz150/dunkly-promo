@@ -39,7 +39,7 @@ export default function PromotionPage() {
 
       const { data } = await supabase
         .from('matchs')
-        .select('*, competitions(logo_url)')
+        .select('*, competition:competition_id(logo_url)')
         // --- CORRECTION : Filtre et tri par date ---
         .gte('date', now) // Date du match >= Date actuelle
         .order('date', { ascending: true }) // Le plus proche d'abord
