@@ -34,15 +34,18 @@ export default function PromotionPage() {
   }, []);
 
   useEffect(() => {
-    // 1. Charger le PROCHAIN match à venir
-    const fetchNextMatch = async () => {
+    // 1. Fonction pour charger le match
+    const fetchMatch = async () => {
       const now = new Date().toISOString(); 
-
+  
       const { data, error } = await supabase
         .from('matchs')
         .select('*, competition(*)') 
-        .gte('date', now) // Date du match >= Date actuelle
-        .order('date', { ascending: true }) // Le plus proche d'abord
+        // CORRECTION : On cherche les matchs à venir (statut)
+        // ET on s'assure que la date est dans le futur
+        .eq('status', 'a-venir')
+        .gte('date', now) 
+        .order('date', { ascending: true })
         .limit(1);
       
       if (error) {
@@ -51,37 +54,38 @@ export default function PromotionPage() {
       
       if (data && data.length > 0) {
         setLatestMatch(data[0]);
-        setNoMatchFound(false); // ✅ Match trouvé
+        setNoMatchFound(false);
       } else {
-        console.log("Aucun match à venir trouvé.");
         setLatestMatch(null); 
-        setNoMatchFound(true); // ✅ Aucun match trouvé
+        setNoMatchFound(true);
       }
     };
-    fetchNextMatch();
-
+  
+    // Charger une première fois
+    fetchMatch();
+  
     // 2. Écouter les changements en temps réel
     const channel = supabase
       .channel('match-realtime')
       .on(
         'postgres_changes',
         {
-          event: 'UPDATE',
+          event: '*', // Écouter INSERT, UPDATE, DELETE
           schema: 'public',
           table: 'matchs',
-          filter: latestMatch ? `id=eq.${latestMatch.id}` : undefined, 
         },
         (payload) => {
-          console.log('Changement reçu!', payload);
-          setLatestMatch(payload.new);
+          console.log('Changement match détecté:', payload);
+          // Au moindre changement, on recharge la liste pour être sûr d'avoir le vrai prochain
+          fetchMatch();
         }
       )
       .subscribe();
-
+  
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [latestMatch?.id]);
+  }, []); // Dépendance vide : la requête se met à jour par le realtime
 
   useEffect(() => {
     // Vérifier la session actuelle au chargement
