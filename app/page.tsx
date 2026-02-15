@@ -8,7 +8,7 @@ export default function PromotionPage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   
-  // --- ÉTATS POUR LA MODALE DU MATCH (ÉTAPE 3) ---
+  // --- ÉTATS POUR LA MODALE DU MATCH ---
   const [isMatchModalOpen, setIsMatchModalOpen] = useState(false);
   const [latestMatch, setLatestMatch] = useState<any>(null);
   // ----------------------------------------------
@@ -37,24 +37,24 @@ export default function PromotionPage() {
     const fetchNextMatch = async () => {
       const now = new Date().toISOString(); // Date actuelle au format ISO
 
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('matchs')
-        .select('*, competition:competition_id(logo_url)')
-        // --- CORRECTION : Filtre et tri par date ---
+        // ✅ CORRECTION 1: Jointure pour récupérer la compétition liée à l'ID
+        .select('*, competition(*)') 
         .gte('date', now) // Date du match >= Date actuelle
         .order('date', { ascending: true }) // Le plus proche d'abord
-        // -------------------------------------------
         .limit(1)
         .single();
       
+      if (error) console.error("Erreur Supabase:", error);
       if (data) setLatestMatch(data);
     };
     fetchNextMatch();
 
-    // 2. Écouter les changements en temps réel (ÉTAPE 3)
+    // 2. Écouter les changements en temps réel
     const channel = supabase
       .channel('match-realtime')
-      .on( // <--- CORRECTION ICI : Il manquait le point avant .on()
+      .on(
         'postgres_changes',
         {
           event: 'UPDATE',
@@ -64,7 +64,8 @@ export default function PromotionPage() {
         },
         (payload) => {
           console.log('Changement reçu!', payload);
-          setLatestMatch(payload.new); // Met à jour le match dans la modale
+          // ✅ CORRECTION 2: Mise à jour sécurisée de l'état
+          setLatestMatch(payload.new);
         }
       )
       .subscribe();
@@ -162,7 +163,7 @@ export default function PromotionPage() {
             Rejoignez-nous dès maintenant
           </Link>
           
-          {/* --- BOUTON POUR OUVRIR LA MODALE MATCH (ÉTAPE 3) --- */}
+          {/* --- BOUTON POUR OUVRIR LA MODALE MATCH --- */}
           <button
             onClick={() => setIsMatchModalOpen(true)}
             className="inline-block bg-slate-700 text-white px-8 py-4 md:px-10 md:py-5 rounded-full text-md md:text-lg font-bold hover:bg-slate-600 transition"
@@ -203,7 +204,6 @@ export default function PromotionPage() {
             {screenshotData.map((screenshot, index) => (
               <div 
                 key={index} 
-                // Ajout de classes de survol et curseur pour indiquer l'interactivité
                 className="bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-xl cursor-pointer transform transition hover:scale-105 hover:border-orange-500"
                 onClick={() => setSelectedImage(screenshot.src)}
               >
@@ -228,8 +228,6 @@ export default function PromotionPage() {
             Ils utilisent Dunkly
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
-
-            {/* Témoignage 1 */}
             <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800">
               <p className="text-slate-300 italic text-lg">
                 "Dunkly a changé ma vison sur le basketball. Le dynamisme des résultats est incroyable !"
@@ -242,8 +240,6 @@ export default function PromotionPage() {
                 </div>
               </div>
             </div>
-
-            {/* Témoignage 2 */}
             <div className="bg-slate-900 p-8 rounded-3xl border border-slate-800">
               <p className="text-slate-300 italic text-lg">
                 "Simple, rapide et efficace. L'application Windows est très intuitive."
@@ -256,7 +252,6 @@ export default function PromotionPage() {
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
@@ -289,14 +284,12 @@ export default function PromotionPage() {
         <div className="max-w-6xl mx-auto px-4 md:px-6 text-center text-slate-500">
           <p className="font-bold text-white mb-2">🏀 DUNKLY</p>
           <p className='text-sm'>© 2026 Dunkly. Tous droits réservés.</p>
-          {/* --- BOUTON POUR OUVRIR LA MODALE --- */}
           <button
             onClick={() => setIsTermsOpen(true)}
             className="text-sm text-slate-600 hover:text-white underline bg-transparent border-none p-0 cursor-pointer"
           >
             Conditions d'utilisation
           </button>
-          {/* ------------------------------------ */}
         </div>
       </footer>
 
@@ -315,16 +308,12 @@ export default function PromotionPage() {
             </div>
             <div className="prose prose-invert text-slate-300">
               <p>Dernière mise à jour : 11 février 2026</p>
-
               <h3 className="text-xl font-bold text-white mt-4">1. Acceptation des conditions</h3>
               <p>En utilisant Dunkly, vous acceptez d'être lié par ces conditions d'utilisation.</p>
-
               <h3 className="text-xl font-bold text-white mt-4">2. Description du service</h3>
               <p>Dunkly est une plateforme gratuite de gestion de résultats de basket-ball.</p>
-
               <h3 className="text-xl font-bold text-white mt-4">3. Confidentialité</h3>
               <p>Vos données sont traitées avec soin. Nous ne vendons pas vos informations personnelles.</p>
-
               <h3 className="text-xl font-bold text-white mt-4">4. Modification du service</h3>
               <p>Nous nous réservons le droit de modifier ou d'interrompre le service à tout moment.</p>
             </div>
@@ -333,7 +322,7 @@ export default function PromotionPage() {
       )}
       {/* ---------------------------------- */}
 
-      {/* --- COMPOSANT MODALE MATCH EN DIRECT (ÉTAPE 3) --- */}
+      {/* --- COMPOSANT MODALE MATCH EN DIRECT --- */}
       {isMatchModalOpen && latestMatch && (
         <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
           <div className="bg-slate-900 border border-slate-700 rounded-3xl p-8 max-w-2xl w-full shadow-2xl">
@@ -350,10 +339,13 @@ export default function PromotionPage() {
             <div className="text-center">
                 {/* --- AFFICHAGE LOGO COMPETITION --- */}
                 <div className="flex items-center justify-center gap-3 mb-2">
-                    {latestMatch.competitions?.logo_url && (
-                        <img src={latestMatch.competitions.logo_url} alt="Logo" className="w-8 h-8 object-contain" />
+                    {/* ✅ CORRECTION 3: Accès sécurisé au nom et logo via la jointure */}
+                    {latestMatch.competition?.logo_url && (
+                        <img src={latestMatch.competition.logo_url} alt="Logo" className="w-8 h-8 object-contain" />
                     )}
-                    <h3 className="text-sm text-slate-400 uppercase tracking-widest">{latestMatch.competition}</h3>
+                    <h3 className="text-sm text-slate-400 uppercase tracking-widest">
+                        {latestMatch.competition?.nom || "Compétition"}
+                    </h3>
                 </div>
                 
                 {/* --- BLOC SCORE ET LOGOS --- */}
@@ -364,7 +356,7 @@ export default function PromotionPage() {
                             <img src={latestMatch.logo_urlA} alt={latestMatch.clubA} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
                         ) : (
                             <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
-                                {latestMatch.clubA[0]}
+                                {latestMatch.clubA ? latestMatch.clubA[0] : "A"}
                             </div>
                         )}
                     </div>
@@ -380,7 +372,7 @@ export default function PromotionPage() {
                             <img src={latestMatch.logo_urlB} alt={latestMatch.clubB} className="w-12 h-12 rounded-full object-contain bg-white p-1" />
                         ) : (
                             <div className="w-12 h-12 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white text-xl">
-                                {latestMatch.clubB[0]}
+                                {latestMatch.clubB ? latestMatch.clubB[0] : "B"}
                             </div>
                         )}
                         <div className="text-xl font-bold">{latestMatch.clubB}</div>
@@ -401,7 +393,7 @@ export default function PromotionPage() {
       {selectedImage && (
         <div 
           className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4 cursor-zoom-out animate-fadeIn"
-          onClick={() => setSelectedImage(null)} // Fermer au clic sur le fond
+          onClick={() => setSelectedImage(null)}
         >
           <div className="relative max-w-7xl max-h-[90vh]">
             <img 
@@ -418,9 +410,7 @@ export default function PromotionPage() {
           </div>
         </div>
       )}
-      {/* ------------------------------------------ */}
       
-      {/* Ajout d'une petite animation CSS pour la lightbox */}
       <style jsx global>{`
         @keyframes fadeIn {
           from { opacity: 0; }
